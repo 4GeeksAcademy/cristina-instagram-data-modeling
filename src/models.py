@@ -7,23 +7,48 @@ from eralchemy2 import render_er
 
 Base = declarative_base()
 
-class Person(Base):
-    __tablename__ = 'person'
-    # Here we define columns for the table person
-    # Notice that each column is also a normal Python instance attribute.
+class Nationality(Base):
+    __tablename__ = 'nationality'
     id = Column(Integer, primary_key=True)
-    name = Column(String(250), nullable=False)
+    country = Column(String(250))
+    flag = Column(String(250))
 
-class Address(Base):
-    __tablename__ = 'address'
-    # Here we define columns for the table address.
-    # Notice that each column is also a normal Python instance attribute.
+class Residence(Base):
+    __tablename__ = 'residence'
     id = Column(Integer, primary_key=True)
-    street_name = Column(String(250))
-    street_number = Column(String(250))
-    post_code = Column(String(250), nullable=False)
-    person_id = Column(Integer, ForeignKey('person.id'))
-    person = relationship(Person)
+    city = Column(String(250))
+    country = Column(String(250))
+       
+class User(Base):
+    __tablename__ = 'user'
+    id = Column(Integer, primary_key=True)
+    name = Column(String(250))
+    last_name = Column(String(250))
+    email = Column(String(250), nullable=False)
+    residence = Column(String(250), nullable=False)
+    nationality = Column(String(250), nullable=False)
+    residence_id = Column(Integer, ForeignKey('residence.id'))
+    residence = relationship(Residence)
+    nationality_id = Column(Integer, ForeignKey('nationality.id'))
+    nationality = relationship(Nationality)
+    
+class Follower(Base):
+    __tablename__ = 'follower'
+    id = Column(Integer, primary_key=True)
+    comments = Column(String(250))
+    likes = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('user.id'))
+    user = relationship(User)
+
+class Following(Base):
+    __tablename__ = 'follwing'
+    id = Column(Integer, primary_key=True)
+    comments = Column(String(250))
+    likes = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('user.id'))
+    user = relationship(User)
+
+    
 
     def to_dict(self):
         return {}
